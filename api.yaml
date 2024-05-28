@@ -6,6 +6,64 @@ servers:
   - url: http://localhost:8180
 paths:
   /message:
+    post:
+      summary: Create a new message
+      parameters:
+        - name: client_id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+              required:
+                - content
+      responses:
+        '200':
+          description: Message updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      client_id:
+                        type: string
+                      content:
+                        type: string
+                  message:
+                    type: string
+                    example: Created message
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Bad Request
+        '409':
+          description: Message not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Message already exists for client 123        
+
     get:
       summary: Get all messages
       responses:
@@ -27,11 +85,16 @@ paths:
                           type: string
 
   /message/{client_id}:
-    post:
-      summary: Create a new message
+    put:
+      summary: Update an existing message
       parameters:
         - name: client_id
           in: path
+          required: true
+          schema:
+            type: string
+        - name: client_id
+          in: header
           required: true
           schema:
             type: string
@@ -48,54 +111,6 @@ paths:
                 - content
       responses:
         '200':
-          description: Message created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      client_id:
-                        type: string
-                      content:
-                        type: string
-                  message:
-                    type: string
-                    example: Created message
-        '409':
-          description: Message already exists
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Message already exists
-
-    put:
-      summary: Update an existing message
-      parameters:
-        - name: client_id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                content:
-                  type: string
-              required:
-                - content
-      responses:
-       '200':
           description: Message updated
           content:
             application/json:
@@ -112,7 +127,17 @@ paths:
                   message:
                     type: string
                     example: Updated message
-       '404':
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Bad Request
+        '404':
           description: Message not found
           content:
             application/json:
@@ -122,6 +147,7 @@ paths:
                   message:
                     type: string
                     example: No message exists for client 123
+
     get:
       summary: Get a message by client_id
       parameters:
@@ -152,11 +178,17 @@ paths:
                   message:
                     type: string
                     example: No message exists for client 123
+
     delete:
       summary: Delete a message
       parameters:
         - name: client_id
           in: path
+          required: true
+          schema:
+            type: string
+        - name: client_id
+          in: header
           required: true
           schema:
             type: string
@@ -171,6 +203,16 @@ paths:
                   message:
                     type: string
                     example: Deleted message for client 123
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Bad Request
         '404':
           description: Message not found
           content:

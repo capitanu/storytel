@@ -12,7 +12,11 @@ func (s *service) CreateMessage(context echo.Context) error {
 	var message struct {
 		Content string `json:"content" `
 	}
-	clientId := context.Param("client_id")
+
+	clientId := context.Request().Header.Get("client_id")
+	if clientId == "" {
+		return echo.NewHTTPError(http.StatusUnauthorized, "No client id found, not authorized to create a message")
+	}
 	
 	err := context.Bind(&message)
 	if err != nil {

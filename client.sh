@@ -7,15 +7,16 @@ list_messages() {
 }
 
 create_message() {
-    client_id="$1"
+	auth_token="$1"
     content="$2"
-    curl -s -X POST "${base_url}/message/${client_id}" -H "Content-Type: application/json" -d "{\"content\": \"${content}\"}"
+    curl -s -X POST "${base_url}/message" -H "Content-Type: application/json" -H "client_id: ${auth_token}" -d "{\"content\": \"${content}\"}"
 }
 
 update_message() {
-    client_id="$1"
-    content="$2"
-    curl -s -X PUT "${base_url}/message/${client_id}" -H "Content-Type: application/json" -d "{\"content\": \"${content}\"}"
+	auth_token="$1"
+    client_id="$2"
+    content="$3"
+    curl -s -X PUT "${base_url}/message/${client_id}" -H "Content-Type: application/json" -H "client_id: ${auth_token}" -d "{\"content\": \"${content}\"}"
 }
 
 get_message() {
@@ -24,8 +25,9 @@ get_message() {
 }
 
 delete_message() {
-    client_id="$1"
-    curl -s -X DELETE "${base_url}/message/${client_id}"
+	auth_token="$1"
+    client_id="$2"
+    curl -s -X DELETE "${base_url}/message/${client_id}" -H "client_id: ${auth_token}"
 }
 
 if [ $# -lt 1 ]; then
@@ -46,11 +48,11 @@ case "$action" in
         create_message "$2" "$3"
         ;;
     "update")
-        if [ $# -lt 3 ]; then
+        if [ $# -lt 4 ]; then
             echo "Usage: $0 update_message <client_id> <content>"
             exit 1
         fi
-        update_message "$2" "$3"
+        update_message "$2" "$3" "$4"
         ;;
     "get")
         if [ $# -lt 2 ]; then
@@ -60,11 +62,11 @@ case "$action" in
         get_message "$2"
         ;;
     "delete")
-        if [ $# -lt 2 ]; then
+        if [ $# -lt 3 ]; then
             echo "Usage: $0 delete_message <client_id>"
             exit 1
         fi
-        delete_message "$2"
+        delete_message "$2" "$3"
         ;;
     *)
         echo "Invalid action: $action"

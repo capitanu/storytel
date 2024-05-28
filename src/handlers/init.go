@@ -11,7 +11,7 @@ func (h *handler) Init(e *echo.Echo) {
 
 	messageRoutes := e.Group("/message")
 
-	messageRoutes.POST("/:client_id", service.CreateMessage)
+	messageRoutes.POST("", service.CreateMessage)
 	// One could argue over either PUT or PATCH here
 	messageRoutes.PUT("/:client_id", service.UpdateMessage)
 	messageRoutes.DELETE("/:client_id", service.DeleteMessage)

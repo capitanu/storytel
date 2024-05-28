@@ -10,11 +10,15 @@ import (
 func (s *service) UpdateMessage(context echo.Context) error {
 	// This should preferably be a DTO and have a mapper
 	var message struct {
-		Content string `json:"content" `
+		Content string `json:"content"`
 	}
 	
 	clientId := context.Param("client_id")
+	clientIdAuth := context.Request().Header.Get("client_id")
 
+	if clientId != clientIdAuth {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Client not authorized to update message")
+	}
 	
 	err := context.Bind(&message)
 	if err != nil {
