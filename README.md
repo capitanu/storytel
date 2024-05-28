@@ -1,6 +1,6 @@
 # Notes before
 
-- I guess when the task said "the client can do create/update/delete operations on their message", I guessed no authentication implementation was expected. This implementation expects the client_id to be sent with the payload. Of course this would not be something that would go in production, proper authentication with headers (bearer for example with token) would be the solution, but again, assumed this was not expected?
+- I guess when the task said "the client can do create/update/delete operations on their message", I guessed no authentication implementation was expected. This implementation expects the client_id to be sent as a PATH param. Of course this would not be something that would go in production, proper authentication with headers (bearer for example with token) would be the solution, but again, assumed this was not expected?
 - As it was not really part of the assignment, haven't written unit or integration tests for this, instead used Postman to test it, since it is quite a trivial app
 
 # Running the app (assuming UNIX based systems :please:)
