@@ -42,14 +42,14 @@ case "$action" in
         ;;
     "create")
         if [ $# -lt 3 ]; then
-            echo "Usage: $0 create_message <client_id> <content>"
+            echo "Usage: $0 create_message <auth_id> <content>"
             exit 1
         fi
         create_message "$2" "$3"
         ;;
     "update")
         if [ $# -lt 4 ]; then
-            echo "Usage: $0 update_message <client_id> <content>"
+            echo "Usage: $0 update_message <auth_id> <client_id_to_update> <content>"
             exit 1
         fi
         update_message "$2" "$3" "$4"
@@ -63,7 +63,7 @@ case "$action" in
         ;;
     "delete")
         if [ $# -lt 3 ]; then
-            echo "Usage: $0 delete_message <client_id>"
+            echo "Usage: $0 delete_message <auth_id> <client_id_to_delete>"
             exit 1
         fi
         delete_message "$2" "$3"
